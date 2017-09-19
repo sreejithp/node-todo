@@ -1,4 +1,6 @@
 var Todo = require('./models/todo');
+const uuidv4 = require('uuid/v4');
+const os = require('os');
 
 function getTodos(res){
 	Todo.find(function(err, todos) {
@@ -21,6 +23,12 @@ module.exports = function(app) {
 		getTodos(res);
 	});
 
+	app.get('/api/ping', function(req, res) {
+		const uuid = uuidv4();
+		console.log( "New Request : " + uuid);
+
+		res.send({ request: uuid, host: os.hostname()});
+	});
 	// create todo and send back all todos after creation
 	app.post('/api/todos', function(req, res) {
 
